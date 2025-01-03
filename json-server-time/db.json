@@ -1,0 +1,19 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "title": "My First Note",
+      "content": "I really do love pizza"
+    },
+    {
+      "id": 2,
+      "title": "My Second Note",
+      "content": "No seriously, it's kind of a problem"
+    },
+    {
+      "id": "dc07",
+      "title": "My third note Bro",
+      "content": "Just kidding, I don't like pizza anymore."
+    }
+  ]
+}
