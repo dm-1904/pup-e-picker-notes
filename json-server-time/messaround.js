@@ -34,3 +34,8 @@ const createNote = ({ title, content }) =>
 // .then((response) => response.text())
 // .then((result) => console.log(result))
 // .catch((error) => console.log("error", error));
+
+createNote({
+  title: "Chillin with the homies",
+  content: "Hanging out down the street. The same old thing we did last week",
+});
