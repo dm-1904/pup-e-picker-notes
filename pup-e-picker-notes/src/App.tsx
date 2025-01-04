@@ -1,57 +1,54 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Note } from "./type";
-
-const getAllNotes = async () => {
-  try {
-    const response = await fetch("http://localhost:3000/notes");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("response", data);
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch notes:", error);
-    return [];
-  }
-};
+import { NotesList } from "./Components/NotesList";
+import { ActiveNote } from "./Components/ActiveNote";
+import { CreateNoteForm } from "./Components/CreateNoteForm";
+import { Request } from "./api";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [activeNote, setActiveNote] = useState<Note | null>(null);
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetchAndSetAllNotes = () => {
+    setIsFetching(true);
+    return Request.getAllNotes()
+      .then(setAllNotes)
+      .then(() => {
+        toast.success("Notes created successfully 😃");
+      })
+      .finally(() => setIsFetching(false));
+  };
 
   useEffect(() => {
-    getAllNotes().then(setNotes);
+    fetchAndSetAllNotes();
   }, []);
+
+  const createNote = (note: Omit<Note, "id">) => {
+    setIsFetching(true);
+    Request.createNote(note)
+      .then(fetchAndSetAllNotes)
+      .finally(() => setIsFetching(false));
+  };
+
+  /* npm i react-hot-toast */
 
   return (
     <>
+      <Toaster />
       <h1>Notes App</h1>
-      <section className="notes-list">
-        <h3>All Notes</h3>
-        <ol>
-          {notes.map((note) => (
-            <li
-              key={note.id}
-              onClick={() => {
-                setActiveNote(note);
-              }}
-            >
-              {note.title}
-            </li>
-          ))}
-        </ol>
-      </section>
-      <section className="my-note">
-        <h3>My Note</h3>
-        <div>
-          <b>Title:</b> {activeNote?.title}
-        </div>
-        <div>
-          <b>Content:</b> {activeNote?.content}
-        </div>
-      </section>
+      <h1>{isFetching ? "Loading...." : ""}</h1>
+      <NotesList
+        setActiveNote={setActiveNote}
+        allNotes={allNotes}
+      />
+      <ActiveNote note={activeNote} />
+      <CreateNoteForm
+        createNote={createNote}
+        isFetching={isFetching}
+      />
     </>
   );
 }

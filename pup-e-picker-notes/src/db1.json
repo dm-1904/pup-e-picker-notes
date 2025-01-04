@@ -1,12 +1,12 @@
 {
   "notes": [
     {
-      "id": 1,
+      "id": "1",
       "title": "My First Note",
       "content": "I really do love pizza"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "My Second Note",
       "content": "No seriously, it's kind of a problem"
     },
@@ -16,9 +16,19 @@
       "content": "Just kidding, I don't like pizza anymore."
     },
     {
-      "id": 45,
+      "id": "45",
       "title": "I'm note 45 my friend",
       "content": "I'm the 45th note, and I'm proud of it."
+    },
+    {
+      "id": "09f6",
+      "title": "hey",
+      "content": "i made this from code then i pressed the button"
+    },
+    {
+      "id": "13f1",
+      "title": "adf",
+      "content": "df"
     }
   ]
 }
