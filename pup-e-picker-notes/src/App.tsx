@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
+import { Note } from "./type";
+
+const getAllNotes = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/notes");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("response", data);
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch notes:", error);
+    return [];
+  }
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeNote, setActiveNote] = useState<Note | null>(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    getAllNotes().then(setNotes);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Notes App</h1>
+      <section className="notes-list">
+        <h3>All Notes</h3>
+        <ol>
+          {notes.map((note) => (
+            <li
+              key={note.id}
+              onClick={() => {
+                setActiveNote(note);
+              }}
+            >
+              {note.title}
+            </li>
+          ))}
+        </ol>
+        <h3>My Note</h3>
+      </section>
+      <section className="my-note">
+        <h3>My Note</h3>
+        <div>
+          <b>Title:</b> {activeNote?.title}
+        </div>
+        <div>
+          <b>Content:</b> {activeNote?.content}
+        </div>
+      </section>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
