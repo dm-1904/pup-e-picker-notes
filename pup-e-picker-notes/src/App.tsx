@@ -42,7 +42,6 @@ function App() {
             </li>
           ))}
         </ol>
-        <h3>My Note</h3>
       </section>
       <section className="my-note">
         <h3>My Note</h3>
